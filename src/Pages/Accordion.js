@@ -21,23 +21,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-
-// const blogsenddata = (e) => {
-//   axios.post(` https://service.apikeeda.com/api/v1/blog`, {          //inputval
-//     headers: {
-//       "x-apikeeda-key": "e1724138964810axk980597553wi",
-//       "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
-//     }
-//   })
-//     .then((res) => {
-//       console.log(e);
-//       getdatablog();
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     })
-// }
-
 // const Deletedata = (e) => {
 //   axios.delete(`https://service.apikeeda.com/api/v1/blog/${id}`, {
 //     headers: {
@@ -75,7 +58,29 @@ function AccordionPage() {
 
   const [age, setAge] = useState("");
   const [data, setdata] = useState([]);
-
+  const [blogdata, setblogdata] = useState([]);
+  const [values, setValues] = useState({
+    imgURL: '',
+    title: '',
+    category:age,
+    description: '',
+  })
+  const token =  window.localStorage.getItem("auth")
+  const submit = (e) => {
+    e.preventDefault()
+    axios.post(` https://service.apikeeda.com/api/v1/blog`, values, {         //inputval
+      headers: {
+        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "authorization": token
+      }
+    })
+      .then((e) => {
+        console.log(e);
+      })  
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   const categorytogetdata = (e) => {
     axios.get(`https://service.apikeeda.com/api/v1/category`, {
@@ -84,8 +89,8 @@ function AccordionPage() {
         "authorization": window.localStorage.getItem("auth")
       }
     })
-      .then((e) => {
-        setdata(e.data.data)
+      .then((res) => {
+        setdata(res.data.data)
       })
       .catch((err) => {
         console.log(err);
@@ -100,7 +105,8 @@ function AccordionPage() {
       }
     })
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.data);
+        setblogdata(res.data.data)
 
       })
       .catch((err) => {
@@ -109,7 +115,24 @@ function AccordionPage() {
   }
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setValues(
+      {
+        ...values,
+        [event.target.name]: event.target.value
+      }
+    )
+    console.log(values);
+  };
+
+  
+  const handleChange1 = (event) => {
+    setValues(
+      {
+        ...values,
+        [age]: event.target.value
+      }
+    )
+    console.log(values);
   };
 
   useState(() => {
@@ -118,6 +141,12 @@ function AccordionPage() {
   }, []);
   console.log(age);
 
+  const handlechange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value
+    })
+  }
 
   return (
     <Box>
@@ -133,67 +162,41 @@ function AccordionPage() {
         <Typography color="#273246" fontSize="14px">Accordion</Typography>
       </Breadcrumbs>
 
-      {/* <Box>
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              multiple
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput label="Name" />}
-              MenuProps={MenuProps}
-            >
-              {names.map((name) => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                  style={getStyles(name, personName)}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box> */}
-
-
       <Box sx={{ padding: 2 }}>
         <Typography variant="h6" gutterBottom>
           Movie List
         </Typography>
-
         <Box sx={{ display: "flex", marginLeft: "10px" }}>
-          <FormControl sx={{ width: "200px" }}>
-            <InputLabel id="demo-simple-select-label">LIST</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="LIST"
-              value={age}
-              onChange={handleChange}
-            >
-              {data.map((item) =>
+          <form onSubmit={submit}>
 
-              (
-                <MenuItem sx={{ width: "100%", textAlign: "center", fontSize: "20px" }} key={item._id} value={item._id}>
-                  {item.name}
-                </MenuItem>
+            <FormControl sx={{ width: "200px" }}>
+              <InputLabel id="demo-simple-select-label">LIST</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name='category'
+                label="LIST"
+                value={values.category}
+                onChange={handleChange}
+              >
+                {data.map((item) =>
+                (
+                  <MenuItem sx={{ width: "100%", textAlign: "center", fontSize: "20px" }} key={item._id} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                )
+                )}
+              </Select>
+            </FormControl>
 
-                // console.log(data);
+            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='imgURL' label="ADD URL" variant="outlined" value={values.imgURL} onChange={handleChange} />
+            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
+            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='description' label="ADD DESCRIPTION" variant="outlined" value={values.description} onChange={handleChange} />
 
-              )
-              )}
-            </Select>
-          </FormControl>
-          <TextField sx={{ width: "450px", marginLeft: "90px" }} id="outlined-basic" label="ADD URL" variant="outlined" />
-          <TextField sx={{ width: "450px", marginLeft: "90px" }} id="outlined-basic" label="ADD TITLE" variant="outlined" />
-          <TextField sx={{ width: "400px", marginLeft: "90px" }} id="outlined-basic" label=" ADD DESCRIPTION" variant="outlined" />
-
-          <Button variant="contained" sx={{ marginLeft: "100px", height: "50px", width: "150px" }}>
-            SUBMIT
-          </Button>
+            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }}>
+              SUBMIT
+            </Button>
+          </form>
         </Box>
 
         <Box aria-label="breadcrumb" sx={{
@@ -202,9 +205,19 @@ function AccordionPage() {
           alignItems: "center",
           width: "100%"
         }}>
+
+          {blogdata.map((item) => (
+            
+            <Box key={item._id}>
+              {item.imgURL}
+              {item.title}
+              {item.category}
+              {item.description}
+            </Box>
+          ))}
         </Box>
       </Box>
-    </Box>
+    </Box >
   )
 }
 

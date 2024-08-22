@@ -28,7 +28,6 @@ const Register = () => {
             ...values,
             [e.target.name]: e.target.value
         })
-
     }
 
     const [visibale] = React.useState(false);
@@ -56,7 +55,6 @@ const Register = () => {
 
     const submit = (e) => {
         console.log(values);
-
         e.preventDefault()
         axios.post('https://service.apikeeda.com/api/v1/user/signup', values, {
             headers: {
