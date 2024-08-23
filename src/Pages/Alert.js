@@ -81,7 +81,7 @@ const AlertPage = () => {
       .then((res) => {
         console.log(res.data.data)
         setdata(res.data.data)
-        localStorage.setItem('auth', res.data.authorization)
+        // localStorage.setItem('auth', res.data.authorization) 
       })
       .catch((err) => {
         console.log(err);
@@ -189,12 +189,9 @@ const AlertPage = () => {
                           <tr></tr>
                         </tr>
                       </table>
-
-
                     </Box>
                   ))}
                 </Stack>
-
               </Item>
             </Grid>
           </Grid>

@@ -10,64 +10,32 @@ import Select from '@mui/material/Select';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-
-
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  color: theme.palette.text.secondary,
-}));
-
-
-// const Deletedata = (e) => {
-//   axios.delete(`https://service.apikeeda.com/api/v1/blog/${id}`, {
-//     headers: {
-//       "x-apikeeda-key": "e1724138964810axk980597553wi",
-//       "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
-//     }
-//   })
-//     .then((res) => {
-//       getdatablog();
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     })
-// }
-
-// function editdata(id) {
-//   axios.patch(`https://service.apikeeda.com/api/v1/blog/${edit}`, {
-//     headers: {
-//       "x-apikeeda-key": "e1724138964810axk980597553wi",
-//       "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
-//     }
-//   })
-//     .then((res) => {
-//       //setedit
-//       //setinput
-//       getdatablog();
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     })
-// }
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 
 
 function AccordionPage() {
 
-  const [age, setAge] = useState("");
   const [data, setdata] = useState([]);
   const [blogdata, setblogdata] = useState([]);
+  const [edit, setedit] = useState(false)
   const [values, setValues] = useState({
     imgURL: '',
     title: '',
-    category:age,
+    category: "",
     description: '',
   })
-  const token =  window.localStorage.getItem("auth")
+
+
+  console.log(values);
+  const token = window.localStorage.getItem("auth")
+  // console.log(token);
+
+
   const submit = (e) => {
-    e.preventDefault()
+    // e.preventDefault();
     axios.post(` https://service.apikeeda.com/api/v1/blog`, values, {         //inputval
       headers: {
         "x-apikeeda-key": "e1724138964810axk980597553wi",
@@ -75,18 +43,19 @@ function AccordionPage() {
       }
     })
       .then((e) => {
+        getdatablog()
         console.log(e);
-      })  
+      })
       .catch((err) => {
         console.log(err);
       })
   }
 
   const categorytogetdata = (e) => {
-    axios.get(`https://service.apikeeda.com/api/v1/category`, {
+    axios.get('https://service.apikeeda.com/api/v1/category', {
       headers: {
         "x-apikeeda-key": "e1724138964810axk980597553wi",
-        "authorization": window.localStorage.getItem("auth")
+        "authorization": token
       }
     })
       .then((res) => {
@@ -101,18 +70,55 @@ function AccordionPage() {
     axios.get(` https://service.apikeeda.com/api/v1/blog`, {
       headers: {
         "x-apikeeda-key": "e1724138964810axk980597553wi",
-        "authorization": Window.localStorage.getItem("auth")
+        "authorization": token
       }
     })
       .then((res) => {
         console.log(res.data.data);
-        setblogdata(res.data.data)
-
+        setblogdata(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       })
   }
+  const Deletedata = (id) => {
+    axios.delete(`https://service.apikeeda.com/api/v1/blog/${id}`, {
+      headers: {
+        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "authorization": token
+      }
+    })
+      .then((res) => {
+        getdatablog();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  function editdata(id) {
+    axios.patch(`https://service.apikeeda.com/api/v1/blog/${edit}`, values, {
+      headers: {
+        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "authorization": token
+      }
+    })
+      .then((res) => {
+        setedit(false)
+        setValues({
+          imgURL: "",
+          title: "",
+          category: "",
+          description: "",
+        })
+        getdatablog();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+
 
   const handleChange = (event) => {
     setValues(
@@ -124,29 +130,24 @@ function AccordionPage() {
     console.log(values);
   };
 
-  
-  const handleChange1 = (event) => {
-    setValues(
-      {
-        ...values,
-        [age]: event.target.value
-      }
-    )
-    console.log(values);
-  };
-
-  useState(() => {
-    // getdatofcategory(),
-    categorytogetdata();
-  }, []);
-  console.log(age);
-
-  const handlechange = (e) => {
+  const handlefor = (item) => {
     setValues({
-      ...values,
-      [e.target.name]: e.target.value
+      imgURL: item.imgURL,
+      title: item.title,
+      category: item.category,
+      description:
+
+        item.description,
     })
   }
+
+
+  useState(() => {
+    getdatablog();
+    categorytogetdata();
+  }, []);
+
+
 
   return (
     <Box>
@@ -161,6 +162,8 @@ function AccordionPage() {
         <Typography color="#899bbd" fontSize="14px">Components</Typography>
         <Typography color="#273246" fontSize="14px">Accordion</Typography>
       </Breadcrumbs>
+
+
 
       <Box sx={{ padding: 2 }}>
         <Typography variant="h6" gutterBottom>
@@ -193,11 +196,14 @@ function AccordionPage() {
             <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
             <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='description' label="ADD DESCRIPTION" variant="outlined" value={values.description} onChange={handleChange} />
 
-            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }}>
+            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }} onClick={() => { edit ? editdata() : submit() }}>
               SUBMIT
             </Button>
           </form>
         </Box>
+
+        <br></br>
+        <br></br>
 
         <Box aria-label="breadcrumb" sx={{
           display: "flex",
@@ -207,18 +213,54 @@ function AccordionPage() {
         }}>
 
           {blogdata.map((item) => (
-            
+
+
+
             <Box key={item._id}>
-              {item.imgURL}
-              {item.title}
-              {item.category}
-              {item.description}
+              <Card sx={{ maxWidth: 345 }}>
+
+                <img src={item.imgURL} />
+
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {item.title}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
+                    {item.description}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
+                    {item.category}
+                  </Typography>
+
+                </CardContent>
+
+                <CardActions>
+                  <Button variant="outlined" onClick={() => Deletedata(item._id)} startIcon={<DeleteIcon />}>
+                    Delete
+                  </Button>
+                  <Button variant="outlined" onClick={() => {
+                    setedit(item._id)
+                    handlefor(item)
+                  }} startIcon={<editIcon />}>
+                    Edit
+                  </Button>
+                </CardActions>
+
+              </Card>
+
+
             </Box>
           ))}
         </Box>
       </Box>
     </Box >
+
+
   )
 }
 
 export default AccordionPage;
+
+{/* <th> <Button variant="outlined" onClick={() => handledelete(item._id)} startIcon={<DeleteIcon />}>Delete </Button></th> */ }
