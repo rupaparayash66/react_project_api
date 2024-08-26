@@ -204,63 +204,55 @@ function AccordionPage() {
 
         <br></br>
         <br></br>
-
-        <Box aria-label="breadcrumb" sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%"
-        }}>
-
-          {blogdata.map((item) => (
+        <Box>
 
 
+          <Box aria-label="breadcrumb" sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%"
+          }}>
 
-            <Box key={item._id}>
-              <Card sx={{ maxWidth: 345 }}>
+            {blogdata.map((item) => (
+              <Box key={item._id}>
+                <Card sx={{ maxWidth: 345 }}>
+                  <img src={item.imgURL} />
+                  <Box>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {item.title}
+                    </Typography>
 
-                <img src={item.imgURL} />
+                    <Typography variant="body2" color="text.secondary">
+                      {item.description}
+                    </Typography>
 
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {item.title}
-                  </Typography>
-
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-
-                  <Typography variant="body2" color="text.secondary">
-                    {item.category}
-                  </Typography>
-
-                </CardContent>
-
-                <CardActions>
-                  <Button variant="outlined" onClick={() => Deletedata(item._id)} startIcon={<DeleteIcon />}>
-                    Delete
-                  </Button>
-                  <Button variant="outlined" onClick={() => {
-                    setedit(item._id)
-                    handlefor(item)
-                  }} startIcon={<editIcon />}>
-                    Edit
-                  </Button>
-                </CardActions>
-
-              </Card>
-
-
-            </Box>
-          ))}
+                    <Typography variant="body2" color="text.secondary">
+                      {item.category}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Button variant="outlined" onClick={() => Deletedata(item._id)} startIcon={<DeleteIcon />}>
+                      Delete
+                    </Button>
+                    <Button variant="outlined" onClick={() => {
+                      setedit(item._id)
+                      handlefor(item)
+                      }} startIcon={<editIcon />}>
+                        Edit
+                      </Button>
+                    </Box>
+                  </Card>
+                </Box>
+            ))}
+          </Box>
         </Box>
-      </Box>
-    </Box >
+      </Box >
+    </Box>
 
 
   )
 }
 
 export default AccordionPage;
-
-{/* <th> <Button variant="outlined" onClick={() => handledelete(item._id)} startIcon={<DeleteIcon />}>Delete </Button></th> */ }
