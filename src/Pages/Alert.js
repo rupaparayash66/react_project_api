@@ -37,7 +37,7 @@ const AlertPage = () => {
     if (tog1) {
       axios.patch(`https://service.apikeeda.com/api/v1/category/${tog1}`, values, {
         headers: {
-          "x-apikeeda-key": "e1724138964810axk980597553wi",
+          "x-apikeeda-key": "c1724833279307ydh362133412xu",
           "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
         }
       })
@@ -53,7 +53,7 @@ const AlertPage = () => {
     else {
       axios.post('https://service.apikeeda.com/api/v1/category', values, {
         headers: {
-          "x-apikeeda-key": "e1724138964810axk980597553wi",
+          "x-apikeeda-key": "c1724833279307ydh362133412xu",
           "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
         }
       })
@@ -74,7 +74,7 @@ const AlertPage = () => {
     // e.preventDefault();
     axios.get('https://service.apikeeda.com/api/v1/category', {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmVmZjY5NWM4NTZlMzc1NGE2ZTgzYiIsImlhdCI6MTcyMzc5MzQwNSwiZXhwIjoxNzIzOTY2MjA1fQ.kT7tT3jEqR8-Yi3T9_NA-Lz7TwjFtAbMPWHFH8dYwEE"
       }
     })
@@ -95,7 +95,7 @@ const AlertPage = () => {
   const handledelete = (id) => {
     axios.delete(`https://service.apikeeda.com/api/v1/category/${id}`, {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi"
+        "x-apikeeda-key": "c1724833279307ydh362133412xu"
       }
     })
       .then((res) => {
@@ -119,7 +119,7 @@ const AlertPage = () => {
   const handleedit = (item) => {
     axios.patch(`https://service.apikeeda.com/api/v1/category/${'id'}`, {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi"
+        "x-apikeeda-key": "c1724833279307ydh362133412xu"
       }
     })
       .then((res) => {

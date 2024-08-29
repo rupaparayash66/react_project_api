@@ -35,10 +35,10 @@ function AccordionPage() {
 
 
   const submit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     axios.post(` https://service.apikeeda.com/api/v1/blog`, values, {         //inputval
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
       }
     })
@@ -54,7 +54,7 @@ function AccordionPage() {
   const categorytogetdata = (e) => {
     axios.get('https://service.apikeeda.com/api/v1/category', {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
       }
     })
@@ -69,7 +69,7 @@ function AccordionPage() {
   const getdatablog = (e) => {
     axios.get(` https://service.apikeeda.com/api/v1/blog`, {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
       }
     })
@@ -84,7 +84,7 @@ function AccordionPage() {
   const Deletedata = (id) => {
     axios.delete(`https://service.apikeeda.com/api/v1/blog/${id}`, {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
       }
     })
@@ -99,7 +99,7 @@ function AccordionPage() {
   function editdata(id) {
     axios.patch(`https://service.apikeeda.com/api/v1/blog/${edit}`, values, {
       headers: {
-        "x-apikeeda-key": "e1724138964810axk980597553wi",
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
       }
     })
@@ -116,6 +116,28 @@ function AccordionPage() {
       .catch((err) => {
         console.log(err);
       })
+  }
+
+  function search(e){
+    axios.get(`https://service.apikeeda.com/api/v1/blog/search?search=${e}`, {
+      headers: {
+        "x-apikeeda-key": "c1724833279307ydh362133412xu",
+        "authorization": token
+      }
+    })
+      .then((res) => {
+        console.log(res.data.data);
+        setblogdata(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  function findcatogray(id){
+    // const id="66cedf0b5c856e3754b2ef22"
+   var a=data.find((a) =>a._id==id);
+   return a.name
   }
 
 
@@ -161,6 +183,7 @@ function AccordionPage() {
         </Link>
         <Typography color="#899bbd" fontSize="14px">Components</Typography>
         <Typography color="#273246" fontSize="14px">Accordion</Typography>
+        <TextField type='text' sx={{ width: "250px",display:"flex",marginLeft:"900px" }} id="outlined-basic" name='search' label="search" variant="outlined"  onChange={(e) => search(e.target.value)}  />
       </Breadcrumbs>
 
 
@@ -170,7 +193,7 @@ function AccordionPage() {
           Movie List
         </Typography>
         <Box sx={{ display: "flex", marginLeft: "10px" }}>
-          <form onSubmit={submit}>
+          <form >
 
             <FormControl sx={{ width: "200px" }}>
               <InputLabel id="demo-simple-select-label">LIST</InputLabel>
@@ -193,10 +216,10 @@ function AccordionPage() {
             </FormControl>
 
             <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='imgURL' label="ADD URL" variant="outlined" value={values.imgURL} onChange={handleChange} />
-            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
+            <TextField type='text' sx={{ width: "300px", marginLeft: "50px"  }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
             <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='description' label="ADD DESCRIPTION" variant="outlined" value={values.description} onChange={handleChange} />
 
-            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }} onClick={() => { edit ? editdata() : submit() }}>
+            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }} onClick={(e) => { edit ? editdata(e) : submit(e) }}>
               SUBMIT
             </Button>
           </form>
@@ -205,31 +228,28 @@ function AccordionPage() {
         <br></br>
         <br></br>
         <Box>
-
-
           <Box aria-label="breadcrumb" sx={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
-            width: "100%"
+            width: "100%",
           }}>
-
             {blogdata.map((item) => (
               <Box key={item._id}>
-                <Card sx={{ maxWidth: 345 }}>
-                  <img src={item.imgURL} />
+                <Card sx={{ maxWidth: 310, margin: "20px"}} >
                   <Box>
+                     <img src={item.imgURL} />
                     <Typography gutterBottom variant="h5" component="div">
                       {item.title}
                     </Typography>
 
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" fontSize={15} >
                       {item.description}
                     </Typography>
 
-                    <Typography variant="body2" color="text.secondary">
-                      {item.category}
+                    <Typography variant="body2" color="text.secondary" fontSize={15}>
+                      {findcatogray(item.category)}
                     </Typography>
                   </Box>
                   <Box>
@@ -239,12 +259,12 @@ function AccordionPage() {
                     <Button variant="outlined" onClick={() => {
                       setedit(item._id)
                       handlefor(item)
-                      }} startIcon={<editIcon />}>
-                        Edit
-                      </Button>
-                    </Box>
-                  </Card>
-                </Box>
+                    }} startIcon={<editIcon />}>
+                      Edit
+                    </Button>
+                  </Box>
+                </Card>
+              </Box>
             ))}
           </Box>
         </Box>
