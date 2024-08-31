@@ -36,7 +36,7 @@ function AccordionPage() {
 
   const submit = (e) => {
     e.preventDefault();
-    axios.post(` https://service.apikeeda.com/api/v1/blog`, values, {         //inputval
+    axios.post(` https://service.apikeeda.com/api/v1/blog`, values, {
       headers: {
         "x-apikeeda-key": "c1724833279307ydh362133412xu",
         "authorization": token
@@ -118,7 +118,7 @@ function AccordionPage() {
       })
   }
 
-  function search(e){
+  function search(e) {
     axios.get(`https://service.apikeeda.com/api/v1/blog/search?search=${e}`, {
       headers: {
         "x-apikeeda-key": "c1724833279307ydh362133412xu",
@@ -134,10 +134,10 @@ function AccordionPage() {
       })
   }
 
-  function findcatogray(id){
+  function findcatogray(id) {
     // const id="66cedf0b5c856e3754b2ef22"
-   var a=data.find((a) =>a._id==id);
-   return a.name
+    var a = data.find((a) => a._id == id);
+    return a.name
   }
 
 
@@ -169,8 +169,6 @@ function AccordionPage() {
     categorytogetdata();
   }, []);
 
-
-
   return (
     <Box>
       <Typography variant="h5"  >
@@ -183,46 +181,42 @@ function AccordionPage() {
         </Link>
         <Typography color="#899bbd" fontSize="14px">Components</Typography>
         <Typography color="#273246" fontSize="14px">Accordion</Typography>
-        <TextField type='text' sx={{ width: "250px",display:"flex",marginLeft:"900px" }} id="outlined-basic" name='search' label="search" variant="outlined"  onChange={(e) => search(e.target.value)}  />
+        <TextField type='text' sx={{ width: "250px", display: "flex", marginLeft: "900px" }} id="outlined-basic" name='search' label="search" variant="outlined" onChange={(e) => search(e.target.value)} />
       </Breadcrumbs>
-
-
 
       <Box sx={{ padding: 2 }}>
         <Typography variant="h6" gutterBottom>
           Movie List
         </Typography>
         <Box sx={{ display: "flex", marginLeft: "10px" }}>
-          <form >
 
-            <FormControl sx={{ width: "200px" }}>
-              <InputLabel id="demo-simple-select-label">LIST</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                name='category'
-                label="LIST"
-                value={values.category}
-                onChange={handleChange}
-              >
-                {data.map((item) =>
-                (
-                  <MenuItem sx={{ width: "100%", textAlign: "center", fontSize: "20px" }} key={item._id} value={item._id}>
-                    {item.name}
-                  </MenuItem>
-                )
-                )}
-              </Select>
-            </FormControl>
+          <FormControl sx={{ width: "200px" }}>
+            <InputLabel id="demo-simple-select-label">LIST</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name='category'
+              label="LIST"
+              value={values.category}
+              onChange={handleChange}
+            >
+              {data.map((item) =>
+              (
+                <MenuItem sx={{ width: "100%", textAlign: "center", fontSize: "20px" }} key={item._id} value={item._id}>
+                  {item.name}
+                </MenuItem>
+              )
+              )}
+            </Select>
+          </FormControl>
 
-            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='imgURL' label="ADD URL" variant="outlined" value={values.imgURL} onChange={handleChange} />
-            <TextField type='text' sx={{ width: "300px", marginLeft: "50px"  }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
-            <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='description' label="ADD DESCRIPTION" variant="outlined" value={values.description} onChange={handleChange} />
+          <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='imgURL' label="ADD URL" variant="outlined" value={values.imgURL} onChange={handleChange} />
+          <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='title' label="ADD TITLE" variant="outlined" value={values.title} onChange={handleChange} />
+          <TextField type='text' sx={{ width: "300px", marginLeft: "50px" }} id="outlined-basic" name='description' label="ADD DESCRIPTION" variant="outlined" value={values.description} onChange={handleChange} />
 
-            <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }} onClick={(e) => { edit ? editdata(e) : submit(e) }}>
-              SUBMIT
-            </Button>
-          </form>
+          <Button variant="contained" type="submit" sx={{ marginLeft: "30px", height: "55px", width: "150px" }} onClick={(e) => { edit ? editdata(e) : submit(e) }}>
+            SUBMIT
+          </Button>
         </Box>
 
         <br></br>
@@ -237,31 +231,39 @@ function AccordionPage() {
           }}>
             {blogdata.map((item) => (
               <Box key={item._id}>
-                <Card sx={{ maxWidth: 310, margin: "20px"}} >
-                  <Box>
-                     <img src={item.imgURL} />
-                    <Typography gutterBottom variant="h5" component="div">
-                      {item.title}
-                    </Typography>
+                <Card sx={{ maxWidth: 320, maxHeight: 900, margin: "20px", border: 'ridge', backgroundColor:'lightgreen ' }} >
 
-                    <Typography variant="body2" color="text.secondary" fontSize={15} >
-                      {item.description}
-                    </Typography>
+                  <Typography>
+                    <img style={{ border: 'ridge', width: 320, height: '400px' }} src={item.imgURL} />
+                  </Typography>
 
-                    <Typography variant="body2" color="text.secondary" fontSize={15}>
-                      {findcatogray(item.category)}
+                  <Typography variant="h5" style={{ textAlign: 'center', color: 'black'}} >
+                    {item.title}
+                  </Typography>
+
+                  <Typography style={{ color: 'black', textIndent: '30px', fontSize: '17px', fontFamily: 'inherit', paddingLeft: '10px', marginTop: '15px', marginBottom: '15px' }} >
+                    {item.description}
+                  </Typography>
+
+
+                  <Box sx={{ marginBottom: '15px', }}>
+                    <Typography fontSize={15}>
+                      <Button variant="text">
+                        {findcatogray(item.category)}
+                      </Button>
+
+                        <Button variant="outlined" onClick={() => Deletedata(item._id)} startIcon={<DeleteIcon />} sx={{marginLeft:'20px'}}>
+                          Delete
+                        </Button>
+
+                        <Button variant="outlined" onClick={() => {
+                          setedit(item._id)
+                          handlefor(item)
+                        }} startIcon={<editIcon />} sx={{marginLeft:'20px'}}  >
+                          Edit
+                        </Button>
+
                     </Typography>
-                  </Box>
-                  <Box>
-                    <Button variant="outlined" onClick={() => Deletedata(item._id)} startIcon={<DeleteIcon />}>
-                      Delete
-                    </Button>
-                    <Button variant="outlined" onClick={() => {
-                      setedit(item._id)
-                      handlefor(item)
-                    }} startIcon={<editIcon />}>
-                      Edit
-                    </Button>
                   </Box>
                 </Card>
               </Box>
@@ -269,7 +271,7 @@ function AccordionPage() {
           </Box>
         </Box>
       </Box >
-    </Box>
+    </Box >
 
 
   )
