@@ -181,7 +181,7 @@ function AccordionPage() {
         </Link>
         <Typography color="#899bbd" fontSize="14px">Components</Typography>
         <Typography color="#273246" fontSize="14px">Accordion</Typography>
-        <TextField type='text' sx={{ width: "250px", display: "flex", marginLeft: "900px" }} id="outlined-basic" name='search' label="search" variant="outlined" onChange={(e) => search(e.target.value)} />
+        <TextField type='text' sx={{ width: "250px", display: "flex", marginLeft: "100px" }} id="outlined-basic" name='search' label="search" variant="outlined" onChange={(e) => search(e.target.value)} />
       </Breadcrumbs>
 
       <Box sx={{ padding: 2 }}>
